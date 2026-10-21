@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Portfolio Analytics</title>
+    <style>
+        :root { color-scheme: light; --ink: #202b27; --muted: #65736c; --paper: #f4f3ee; --panel: #fffefa; --green: #1e6555; --coral: #c45f47; --line: #31483a24; }
+        * { box-sizing: border-box; }
+        body { margin: 0; background: var(--paper); color: var(--ink); font: 15px/1.55 "Trebuchet MS", "Segoe UI", sans-serif; }
+        header { display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 18px max(5vw, 20px); background: #173d34; color: #fffefa; }
+        header h1 { margin: 0; font: 500 26px Georgia, "Times New Roman", serif; }
+        button, input { font: inherit; }
+        button { min-height: 42px; padding: 9px 15px; border: 1px solid var(--green); border-radius: 4px; background: var(--green); color: white; cursor: pointer; }
+        button:hover { background: #184d41; }
+        button.secondary { border-color: #ffffff85; background: transparent; }
+        main { width: min(1180px, 92%); margin: 34px auto 70px; }
+        .login { width: min(430px, 100%); margin: 10vh auto; padding: 30px; border: 1px solid var(--line); border-radius: 6px; background: var(--panel); box-shadow: 0 14px 36px #263c3210; }
+        h2, h3 { font-family: Georgia, "Times New Roman", serif; font-weight: 600; }
+        .login h2 { margin: 0 0 8px; font-size: 28px; }
+        .muted, .message { color: var(--muted); }
+        label { display: block; margin: 22px 0 7px; font-weight: 700; }
+        input { width: 100%; min-height: 44px; padding: 9px 11px; border: 1px solid var(--line); border-radius: 4px; background: white; color: var(--ink); }
+        .login button { width: 100%; margin-top: 14px; }
+        .message { min-height: 24px; margin: 12px 0 0; }
+        [hidden] { display: none !important; }
+        .summary { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-bottom: 22px; }
+        .metric, .panel { border: 1px solid var(--line); border-radius: 6px; background: var(--panel); }
+        .metric { padding: 19px 22px; }
+        .metric span { display: block; color: var(--muted); font-size: 13px; }
+        .metric strong { display: block; margin-top: 4px; color: var(--green); font: 600 32px Georgia, "Times New Roman", serif; }
+        .columns { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 15px; margin: 15px 0; }
+        .panel { min-width: 0; padding: 18px; }
+        .panel h2 { margin: 0 0 12px; font-size: 21px; }
+        .table-wrap { overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; text-align: left; }
+        th, td { padding: 9px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+        th { color: var(--muted); font-size: 12px; font-weight: 700; }
+        td { overflow-wrap: anywhere; }
+        .daily-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 8px; }
+        .daily-item { padding: 10px; border-radius: 4px; background: var(--paper); }
+        .daily-item strong, .daily-item span { display: block; }
+        .daily-item span { color: var(--muted); font-size: 13px; }
+        :focus-visible { outline: 3px solid var(--coral); outline-offset: 3px; }
+        @media (max-width: 700px) { header { align-items: flex-start; } .summary { grid-template-columns: 1fr 1fr; } .columns { grid-template-columns: 1fr; } main { margin-top: 22px; } }
+        @media (max-width: 420px) { header h1 { font-size: 22px; } .summary { grid-template-columns: 1fr; } .login { padding: 23px; } }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Portfolio Analytics</h1>
+        <button id="logout" class="secondary" type="button" hidden>Sign out</button>
+    </header>
+    <main>
+        <form class="login" id="login-form">
+            <h2>Owner sign in</h2>
+            <p class="muted">Analytics data is private to the portfolio owner.</p>
+            <label for="password">Password</label>
+            <input id="password" name="password" type="password" autocomplete="current-password" required maxlength="1024">
+            <button type="submit">Sign in</button>
+            <p class="message" id="login-message" role="status" aria-live="polite"></p>
+        </form>
+        <section id="dashboard" hidden aria-label="Visitor analytics dashboard">
+            <div class="summary">
+                <article class="metric"><span>Total visits</span><strong id="total-visits">0</strong></article>
+                <article class="metric"><span>Unique visitors</span><strong id="unique-visitors">0</strong></article>
+            </div>
+            <section class="panel"><h2>Last 30 days</h2><div id="daily" class="daily-list"></div></section>
+            <div class="columns">
+                <section class="panel"><h2>Traffic sources</h2><div id="sources"></div></section>
+                <section class="panel"><h2>Referral websites</h2><div id="referrals"></div></section>
+                <section class="panel"><h2>Pages</h2><div id="pages"></div></section>
+                <section class="panel"><h2>Browsers and devices</h2><div id="technology"></div></section>
+            </div>
+            <section class="panel"><h2>Recent visits</h2><div id="recent"></div></section>
+            <p class="message" id="dashboard-message" role="status" aria-live="polite"></p>
+        </section>
+    </main>
+    <script>
+        const loginForm = document.getElementById("login-form");
+        const dashboard = document.getElementById("dashboard");
+        const loginMessage = document.getElementById("login-message");
+        const dashboardMessage = document.getElementById("dashboard-message");
+        const logoutButton = document.getElementById("logout");
+
+        function renderTable(containerId, headers, rows) {
+            const container = document.getElementById(containerId);
+            container.replaceChildren();
+            if (!rows.length) {
+                const empty = document.createElement("p");
+                empty.className = "muted";
+                empty.textContent = "No data yet.";
+                container.append(empty);
+                return;
+            }
+            const wrapper = document.createElement("div");
+            wrapper.className = "table-wrap";
+            const table = document.createElement("table");
+            const head = document.createElement("thead");
+            const headRow = document.createElement("tr");
+            headers.forEach((header) => {
+                const cell = document.createElement("th");
+                cell.textContent = header;
+                headRow.append(cell);
+            });
+            head.append(headRow);
+            const body = document.createElement("tbody");
+            rows.forEach((row) => {
+                const tableRow = document.createElement("tr");
+                row.forEach((value) => {
+                    const cell = document.createElement("td");
+                    cell.textContent = value == null ? "-" : String(value);
+                    tableRow.append(cell);
+                });
+                body.append(tableRow);
+            });
+            table.append(head, body);
+            wrapper.append(table);
+            container.append(wrapper);
+        }
+
+        function renderPairs(containerId, rows, labelKey) {
+            renderTable(containerId, [labelKey, "Visits"], rows.map((row) => [row[labelKey], row.visits]));
+        }
+
+        async function loadDashboard() {
+            const response = await fetch("/api/admin/analytics", { credentials: "same-origin", cache: "no-store" });
+            if (response.status === 401) {
+                dashboard.hidden = true;
+                loginForm.hidden = false;
+                logoutButton.hidden = true;
+                return;
+            }
+            if (!response.ok) throw new Error("Could not load analytics.");
+            const data = await response.json();
+            document.getElementById("total-visits").textContent = data.totals.total_visits.toLocaleString();
+            document.getElementById("unique-visitors").textContent = data.totals.unique_visitors.toLocaleString();
+            renderPairs("sources", data.sources, "source");
+            renderPairs("referrals", data.referrals, "referral_host");
+            renderPairs("pages", data.pages, "page_path");
+            renderTable("technology", ["Type", "Visits"], [
+                ...data.browsers.map((row) => [`Browser: ${row.browser}`, row.visits]),
+                ...data.devices.map((row) => [`Device: ${row.device_type}`, row.visits])
+            ]);
+            renderTable("recent", ["Page", "Source", "Referrer", "Browser", "Device", "Timestamp (UTC)"],
+                data.recent.map((row) => [row.page_path, row.source, row.referral_host, row.browser, row.device_type,
+                    new Date(row.visited_at).toISOString().replace("T", " ").slice(0, 19)]));
+            const daily = document.getElementById("daily");
+            daily.replaceChildren();
+            data.daily.forEach((row) => {
+                const item = document.createElement("div");
+                item.className = "daily-item";
+                const day = document.createElement("strong");
+                day.textContent = new Date(`${row.day}T00:00:00Z`).toLocaleDateString();
+                const detail = document.createElement("span");
+                detail.textContent = `${row.visits} visits · ${row.unique_visitors} unique`;
+                item.append(day, detail);
+                daily.append(item);
+            });
+            dashboard.hidden = false;
+            loginForm.hidden = true;
+            logoutButton.hidden = false;
+        }
+
+        loginForm.addEventListener("submit", async (event) => {
+            event.preventDefault();
+            loginMessage.textContent = "Signing in...";
+            try {
+                const response = await fetch("/api/admin/login", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    credentials: "same-origin",
+                    body: JSON.stringify({ password: new FormData(loginForm).get("password") })
+                });
+                if (!response.ok) throw new Error("Sign-in failed. Check your password and try again.");
+                loginForm.reset();
+                await loadDashboard();
+            } catch (error) {
+                loginMessage.textContent = error.message;
+            }
+        });
+
+        logoutButton.addEventListener("click", async () => {
+            await fetch("/api/admin/logout", { method: "POST", credentials: "same-origin" });
+            dashboard.hidden = true;
+            loginForm.hidden = false;
+            logoutButton.hidden = true;
+            loginMessage.textContent = "Signed out.";
+        });
+
+        loadDashboard().catch((error) => {
+            dashboardMessage.textContent = error.message;
+        });
+    </script>
+</body>
+</html>

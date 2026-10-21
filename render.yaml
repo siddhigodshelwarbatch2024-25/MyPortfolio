@@ -1,0 +1,24 @@
+services:
+  - type: web
+    name: siddhi-portfolio
+    runtime: node
+    plan: starter
+    buildCommand: npm ci
+    startCommand: npm start
+    healthCheckPath: /healthz
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        fromDatabase:
+          name: siddhi-portfolio-db
+          property: connectionString
+      - key: SESSION_SECRET
+        sync: false
+      - key: TRACKING_SECRET
+        sync: false
+      - key: OWNER_PASSWORD_HASH
+        sync: false
+databases:
+  - name: siddhi-portfolio-db
+    plan: basic-256mb

@@ -1,0 +1,956 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Siddhi Godshelwar's personal portfolio website">
+    <title>Siddhi Godshelwar | My Portfolio</title>
+
+    <style>
+        :root {
+            --bg: #07111f;
+            --card: #101d30;
+            --text: #f4f7ff;
+            --muted: #b4c5d8;
+            --cyan: #42e8e0;
+            --purple: #7c83ff;
+            --pink: #ff6cab;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .container {
+            width: min(1120px, 90%);
+            margin: auto;
+        }
+
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(7, 17, 31, 0.94);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid #ffffff12;
+        }
+
+        nav {
+            min-height: 75px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            flex-wrap: wrap;
+            padding: 12px 0;
+        }
+
+        .logo {
+            font-size: 23px;
+            font-weight: bold;
+            color: var(--cyan);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 18px;
+            flex-wrap: wrap;
+        }
+
+        nav a:hover {
+            color: var(--cyan);
+        }
+
+        section {
+            padding: 80px 0;
+            scroll-margin-top: 85px;
+        }
+
+        .hero {
+            min-height: 85vh;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 45px;
+            padding: 70px 0;
+            background:
+                radial-gradient(circle at 80% 40%, #7c83ff18, transparent 35%),
+                radial-gradient(circle at 10% 20%, #42e8e012, transparent 35%);
+        }
+
+        .hero-content {
+            flex: 1;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 7px 14px;
+            border: 1px solid #42e8e055;
+            border-radius: 30px;
+            color: var(--cyan);
+            font-size: 12px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: clamp(36px, 5vw, 60px);
+            line-height: 1.2;
+            margin-bottom: 15px;
+        }
+
+        h1 span,
+        .gradient-text {
+            background: linear-gradient(90deg, var(--cyan), var(--purple), var(--pink));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .hero h3 {
+            color: #d6e5f5;
+            font-size: 21px;
+            margin-bottom: 15px;
+        }
+
+        .hero p {
+            max-width: 570px;
+            color: var(--muted);
+            margin-bottom: 25px;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 13px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-weight: bold;
+            border: 1px solid var(--cyan);
+            transition: 0.3s;
+        }
+
+        .btn.primary {
+            background: linear-gradient(120deg, var(--cyan), var(--purple));
+            color: #07111f;
+            border: none;
+        }
+
+        .btn:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px #42e8e044;
+        }
+
+        .profile {
+            position: relative;
+            width: 280px;
+            height: 280px;
+            min-width: 280px;
+            padding: 6px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--cyan), var(--purple), var(--pink));
+            box-shadow: 0 0 30px #42e8e044, 0 0 65px #7c83ff25;
+            animation: float 4s ease-in-out infinite;
+        }
+
+        .profile img {
+            width: 100%;
+            height: 100%;
+            display: block;
+            border-radius: 50%;
+            object-fit: cover;
+            object-position: center;
+            border: 4px solid var(--bg);
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .section-title {
+            font-size: clamp(28px, 4vw, 38px);
+            text-align: center;
+            margin-bottom: 12px;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--muted);
+            margin-bottom: 40px;
+        }
+
+        .about-box {
+            max-width: 850px;
+            margin: auto;
+            padding: 30px;
+            background: var(--card);
+            border: 1px solid #ffffff12;
+            border-radius: 18px;
+            color: var(--muted);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 22px;
+        }
+
+        .card {
+            background: linear-gradient(145deg, #122139, #0d192a);
+            border: 1px solid #ffffff13;
+            padding: 25px;
+            border-radius: 17px;
+            transition: 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-6px);
+            border-color: #42e8e066;
+            box-shadow: 0 12px 30px #00000022;
+        }
+
+        .card h3 {
+            color: var(--cyan);
+            margin-bottom: 10px;
+        }
+
+        .card p,
+        .card li {
+            color: var(--muted);
+        }
+
+        .card ul {
+            padding-left: 20px;
+        }
+
+        .skill {
+            margin: 16px 0;
+        }
+
+        .skill-label {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 7px;
+        }
+
+        .bar {
+            height: 8px;
+            background: #26364d;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .bar span {
+            display: block;
+            height: 100%;
+            background: linear-gradient(90deg, var(--cyan), var(--purple));
+            border-radius: 20px;
+        }
+
+        .project-link {
+            display: inline-block;
+            margin-top: 12px;
+            color: var(--cyan);
+            font-weight: bold;
+        }
+
+        .contact-box {
+            max-width: 750px;
+            margin: auto;
+            padding: 30px;
+            text-align: center;
+            background: var(--card);
+            border-radius: 18px;
+            border: 1px solid #ffffff13;
+        }
+
+        .contact-box p {
+            color: var(--muted);
+            margin: 10px 0;
+            overflow-wrap: anywhere;
+        }
+
+        .socials {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 22px;
+        }
+
+        footer {
+            padding: 25px 5%;
+            text-align: center;
+            color: var(--muted);
+            border-top: 1px solid #ffffff12;
+        }
+
+        @media (max-width: 800px) {
+            .hero {
+                flex-direction: column-reverse;
+                text-align: center;
+                padding: 55px 0;
+            }
+
+            .hero p {
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .buttons {
+                justify-content: center;
+            }
+
+            .profile {
+                width: 220px;
+                height: 220px;
+                min-width: 220px;
+            }
+
+            .grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            nav {
+                justify-content: center;
+            }
+
+            nav ul {
+                justify-content: center;
+                gap: 12px;
+            }
+        }
+
+        @media (max-width: 520px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            section {
+                padding: 60px 0;
+            }
+
+            .about-box,
+            .contact-box,
+            .card {
+                padding: 22px;
+            }
+
+            nav ul {
+                font-size: 13px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                scroll-behavior: auto !important;
+                animation: none !important;
+                transition: none !important;
+            }
+        }
+
+        :root {
+            --bg: #f4f3ee;
+            --card: #fffefa;
+            --text: #202b27;
+            --muted: #65736c;
+            --cyan: #1e6555;
+            --purple: #1e6555;
+            --pink: #d66b50;
+        }
+
+        body {
+            font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+            background:
+                radial-gradient(ellipse at 8% 4%, #e5eadd 0, transparent 31rem),
+                var(--bg);
+            color: var(--text);
+        }
+
+        header {
+            background: rgba(244, 243, 238, 0.94);
+            border-bottom-color: #24362c18;
+        }
+
+        nav {
+            min-height: 72px;
+        }
+
+        .logo {
+            color: #1e6555;
+            font-size: 25px;
+        }
+
+        nav ul {
+            gap: clamp(10px, 1.7vw, 22px);
+        }
+
+        nav a {
+            font-size: 14px;
+            font-weight: 600;
+            transition: color 0.2s ease;
+        }
+
+        nav a:hover {
+            color: #d66b50;
+        }
+
+        section {
+            padding: 88px 0;
+        }
+
+        .hero {
+            width: min(1240px, 94%);
+            min-height: min(720px, 82vh);
+            margin: 24px auto 0;
+            padding: clamp(48px, 7vw, 92px) clamp(30px, 7vw, 92px);
+            border-radius: 8px;
+            background:
+                radial-gradient(ellipse at 85% 22%, #d66b5025, transparent 29%),
+                linear-gradient(125deg, #173d34, #245247 72%, #315b4d);
+            box-shadow: 0 22px 55px #193d301c;
+        }
+
+        .tag {
+            padding: 7px 12px;
+            border-color: #f0b69b66;
+            border-radius: 3px;
+            color: #f0b69b;
+            font-size: 11px;
+            letter-spacing: 1.8px;
+        }
+
+        h1,
+        .section-title {
+            font-family: Georgia, "Times New Roman", serif;
+            font-weight: 500;
+            letter-spacing: 0;
+        }
+
+        h1 {
+            font-size: clamp(42px, 5.5vw, 68px);
+            line-height: 1.12;
+            color: #fffefa;
+        }
+
+        h1 span {
+            background: none;
+            color: #f0b69b;
+        }
+
+        .gradient-text {
+            background: none;
+            color: #c45f47;
+        }
+
+        .hero h3 {
+            color: #f4e8d8;
+            font-size: 20px;
+            font-weight: 500;
+        }
+
+        .hero p {
+            color: #d6e1d8;
+            line-height: 1.85;
+        }
+
+        .buttons {
+            gap: 12px;
+        }
+
+        .btn {
+            padding: 12px 19px;
+            border: 1px solid #f0b69b88;
+            border-radius: 4px;
+            color: inherit;
+            transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+        }
+
+        .btn.primary {
+            background: #e99576;
+            color: #202b27;
+            border: 1px solid #e99576;
+        }
+
+        .hero .btn:not(.primary) {
+            color: #fffefa;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px #101e1728;
+        }
+
+        .profile {
+            width: 310px;
+            height: 310px;
+            min-width: 310px;
+            padding: 5px;
+            background: linear-gradient(145deg, #f0b69b, #d66b50);
+            box-shadow: 0 18px 42px #0d231d55;
+        }
+
+        .profile img {
+            border-color: #173d34;
+        }
+
+        .section-title {
+            font-size: clamp(32px, 4vw, 44px);
+            color: #263c32;
+        }
+
+        .section-subtitle {
+            color: var(--muted);
+            margin-bottom: 38px;
+        }
+
+        #about,
+        #marks,
+        #projects,
+        #interests {
+            background: #eceee7;
+        }
+
+        .about-box,
+        .contact-box {
+            background: #fffefa;
+            border: 1px solid #31483a1c;
+            border-radius: 6px;
+            box-shadow: 0 12px 34px #263c320a;
+        }
+
+        .about-box {
+            max-width: 900px;
+            padding: 36px clamp(24px, 5vw, 58px);
+            color: #53635a;
+            font-size: 17px;
+            line-height: 1.9;
+        }
+
+        .grid {
+            gap: 18px;
+        }
+
+        .card {
+            background: #fffefa;
+            border: 1px solid #31483a1c;
+            border-radius: 6px;
+            padding: 26px;
+            box-shadow: 0 10px 28px #263c3208;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            border-color: #d66b5070;
+            box-shadow: 0 16px 34px #263c3214;
+        }
+
+        .card h3 {
+            color: #1e6555;
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 21px;
+            font-weight: 600;
+        }
+
+        .card p,
+        .card li {
+            color: #65736c;
+        }
+
+        .card li + li {
+            margin-top: 7px;
+        }
+
+        .bar {
+            background: #e1e6dc;
+            border-radius: 2px;
+        }
+
+        .bar span {
+            background: linear-gradient(90deg, #1e6555, #d66b50);
+            border-radius: 2px;
+        }
+
+        .project-link {
+            color: #b9523d;
+        }
+
+        .contact-box {
+            padding: 38px 30px;
+        }
+
+        .contact-box h3 {
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 25px;
+            font-weight: 600;
+            color: #263c32;
+        }
+
+        footer {
+            background: #173d34;
+            border-top: 0;
+            color: #d6e1d8;
+        }
+
+        :focus-visible {
+            outline: 3px solid #d66b50;
+            outline-offset: 3px;
+        }
+
+        @media (max-width: 800px) {
+            .hero {
+                min-height: auto;
+                margin-top: 14px;
+                padding: 56px 28px 76px;
+            }
+
+            .profile {
+                width: 240px;
+                height: 240px;
+                min-width: 240px;
+            }
+
+            section {
+                padding: 70px 0;
+            }
+        }
+
+        @media (max-width: 520px) {
+            .hero {
+                width: 100%;
+                margin-top: 0;
+                border-radius: 0;
+                padding: 48px 22px 78px;
+            }
+
+            .profile {
+                width: 210px;
+                height: 210px;
+                min-width: 210px;
+            }
+
+            .grid {
+                gap: 14px;
+            }
+
+            .card {
+                padding: 22px;
+            }
+
+            nav ul {
+                gap: 9px 14px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <nav class="container">
+            <a class="logo" href="#home">Siddhi<span class="gradient-text">.</span></a>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#education">Education</a></li>
+                <li><a href="#skills">Skills</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#achievements">Achievements</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero container" id="home">
+            <div class="hero-content">
+                <div class="tag">COMPUTER SCIENCE STUDENT</div>
+                <h1>Hello, I'm<br><span>Siddhi Godshelwar</span></h1>
+                <h3>Aspiring Software Developer</h3>
+                <p>
+                    Welcome to my personal portfolio! I am a student who enjoys
+                    learning programming, exploring web technologies, and solving
+                    problems through creative ideas. I am building my skills one
+                    project at a time.
+                </p>
+                <div class="buttons">
+                    <a href="#projects" class="btn primary">Explore My Work ↗</a>
+                    <a href="#contact" class="btn">Let's Connect</a>
+                </div>
+            </div>
+
+            <div class="profile">
+                <img id="profile-photo" src="images/siddhi.jpeg" alt="Siddhi Godshelwar profile photo">
+            </div>
+        </section>
+
+        <section id="about">
+            <div class="container">
+                <h2 class="section-title">About <span class="gradient-text">Me</span></h2>
+                <p class="section-subtitle">A little introduction about myself</p>
+                <div class="about-box">
+                    <p>
+                        Hello! I am Siddhi Godshelwar. I am interested in technology,
+                        programming, and website development. I enjoy learning new
+                        concepts, improving my technical knowledge, and applying
+                        what I learn to practical projects. My goal is to continue
+                        developing my skills and prepare for a career in the IT field.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section id="education">
+            <div class="container">
+                <h2 class="section-title">My <span class="gradient-text">Education</span></h2>
+                <p class="section-subtitle">My academic journey</p>
+                <div class="grid">
+                    <article class="card">
+                        <h3>Current Course</h3>
+                        <p><strong>Course:</strong> CSE</p>
+                        <p><strong>College:</strong> Symbiosis Institute Of Technology, Nagpur</p>
+                        <p><strong>Year:</strong> 3rd Year</p>
+                    </article>
+                    <article class="card">
+                        <h3> Diploma</h3>
+                        <p><strong>School:</strong> NIT Polytecnic Nagpur </p>
+                        <p><strong>Result:</strong> 83.47%</p>
+                        <p><strong>Year:</strong> 2023-25</p>
+                    </article>
+                    <article class="card">
+                        <h3>Secondary Education</h3>
+                        <p><strong>School:</strong> C.S.E.P.S</p>
+                        <p><strong>Result:</strong> 82.80%</p>
+                        <p><strong>Year:</strong> 2023</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section id="marks">
+            <div class="container">
+                <h2 class="section-title">Academic <span class="gradient-text">Performance</span></h2>
+                <p class="section-subtitle">My academic results and progress</p>
+                <div class="grid">
+                    <article class="card">
+                        <h3>Diploma</h3>
+                        <p>Percentage or CGPA: </p>
+                    </article>
+                    <article class="card">
+                        <h3>Semester / Year 2</h3>
+                        <p>Percentage or CGPA: 7.23</p>
+                    </article>
+                    <article class="card">
+                        <h3>Academic Goal</h3>
+                        <p>Continue learning and improve my academic performance.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section id="skills">
+            <div class="container">
+                <h2 class="section-title">Technical <span class="gradient-text">Skills</span></h2>
+                <p class="section-subtitle">Technologies I am learning and practising</p>
+                <div class="grid">
+                    <article class="card">
+                        <h3>Web Development</h3>
+
+                        <div class="skill">
+                            <div class="skill-label"><span>HTML</span><span>Learning</span></div>
+                            <div class="bar"><span style="width:70%"></span></div>
+                        </div>
+
+                        <div class="skill">
+                            <div class="skill-label"><span>CSS</span><span>Learning</span></div>
+                            <div class="bar"><span style="width:60%"></span></div>
+                        </div>
+
+                        <div class="skill">
+                            <div class="skill-label"><span>JavaScript</span><span>Learning</span></div>
+                            <div class="bar"><span style="width:45%"></span></div>
+                        </div>
+                    </article>
+
+                    <article class="card">
+                        <h3>Programming</h3>
+                        <ul>
+                            <li>C</li>
+                            <li>C++</li>
+                            <li>HTML</li>
+                            <li>CSS</li>
+                        </ul>
+                    </article>
+
+                    <article class="card">
+                        <h3>Professional Skills</h3>
+                        <ul>
+                            <li>Communication</li>
+                            <li>Teamwork</li>
+                            <li>Time management</li>
+                            <li>Willingness to learn</li>
+                        </ul>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section id="projects">
+            <div class="container">
+                <h2 class="section-title">My <span class="gradient-text">Projects</span></h2>
+                <p class="section-subtitle">Some projects from my learning journey</p>
+                <div class="grid">
+                    <article class="card">
+                        <h3>Personal Portfolio</h3>
+                        <p>
+                            A responsive website created using HTML and CSS to
+                            introduce myself, share my skills, and showcase my work.
+                        </p>
+                        <a class="project-link" href="https://github.com/siddhigodshelwarbatch2024-25"
+                           target="_blank" rel="noopener noreferrer">Visit GitHub ↗</a>
+                    </article>
+
+                    <article class="card">
+                        <h3>Project One</h3>
+                        <p>A smart shoe that detects nearby objects to support people with visual impairments.</p>
+                        <a class="project-link" href="#contact">Ask Me About It ↗</a>
+                    </article>
+
+                    <article class="card">
+                        <h3>Project Two</h3>
+                        <p>An app designed to help users access medical emergency support.</p>
+                        <a class="project-link" href="#contact">Get in Touch ↗</a>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section id="achievements">
+            <div class="container">
+                <h2 class="section-title">Achievements & <span class="gradient-text">Certificates</span></h2>
+                <p class="section-subtitle">Milestones and learning experiences</p>
+                <div class="grid">
+                    <article class="card">
+                        <h3>Leadership</h3>
+                        <ul>
+                            <li>Served as School Captain during the 2022-2023 academic year.</li>
+                            <li>Served as Women Cell Head during diploma studies in 2024-2025.</li>
+                        </ul>
+                    </article>
+
+                    <article class="card">
+                        <h3>Academic Milestones</h3>
+                        <ul>
+                            <li>Earned 83.47% in diploma studies.</li>
+                            <li>Earned 82.80% in secondary education.</li>
+                            <li>Currently pursuing a CSE degree at Symbiosis Institute of Technology, Nagpur.</li>
+                        </ul>
+                    </article>
+
+                    <article class="card">
+                        <h3>Project Work</h3>
+                        <ul>
+                            <li>Developed a Smart Object Detection Shoe for Blind People.</li>
+                            <li>Worked on a Medical Emergency App.</li>
+                            <li>Created this portfolio to present skills and projects.</li>
+                        </ul>
+                    </article>
+
+                    <article class="card">
+                        <h3>Technical Engagement</h3>
+                        <ul>
+                            <li>Attended technical events.</li>
+                            <li>Building skills in HTML, CSS, and JavaScript through ongoing practice.</li>
+                        </ul>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section id="interests">
+            <div class="container">
+                <h2 class="section-title">Career <span class="gradient-text">Interests</span></h2>
+                <p class="section-subtitle">Areas I would like to explore</p>
+                <div class="grid">
+                    <article class="card">
+                        <h3>Web Development</h3>
+                        <p>Building accessible, responsive, and user-friendly websites.</p>
+                    </article>
+                    <article class="card">
+                        <h3>Software Development</h3>
+                        <p>Learning programming and creating practical solutions.</p>
+                    </article>
+                    <article class="card">
+                        <h3>Continuous Learning</h3>
+                        <p>Exploring new tools and improving my technical abilities.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        
+
+        <section id="contact">
+            <div class="container">
+                <h2 class="section-title">Let's <span class="gradient-text">Connect</span></h2>
+                <p class="section-subtitle">Feel free to reach out to me</p>
+
+                <div class="contact-box">
+                    <h3>Contact Siddhi Godshelwar</h3>
+                    <p>Email: <a class="gradient-text" href="mailto:siddhigodshelwar1404@gmail.com">siddhigodshelwar1404@gmail.com</a></p>
+
+                    <div class="socials">
+                        <a class="btn primary"
+                           href="https://github.com/siddhigodshelwarbatch2024-25"
+                           target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+
+                        <a class="btn"
+                           href="https://www.linkedin.com/in/siddhi-godshelwar-6b6bba3a1/"
+                           target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
+
+                        <a class="btn"
+                           href="mailto:siddhigodshelwar1404@gmail.com">Email Me ✉</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>Designed and created by Siddhi Godshelwar</p>
+        <p>© <span id="year"></span> My Portfolio | Made with HTML & CSS</p>
+        <p class="visitor-count">Unique visitors: <strong id="visitor-count" aria-live="polite">Counting...</strong></p>
+        <p>Anonymous analytics records visits. Raw IP addresses are not stored.</p>
+    </footer>
+
+    <script>
+        document.getElementById("year").textContent = new Date().getFullYear();
+    </script>
+    <script src="/scripts/analytics.js" defer></script>
+
+</body>
+</html>
